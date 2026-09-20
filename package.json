@@ -1,0 +1,23 @@
+{
+  "name": "page-watcher",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Webページが指定条件を満たしたことを検知して通知する汎用監視ツール",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "check": "tsx src/index.ts",
+    "typecheck": "tsc",
+    "test": "node --import tsx --test \"src/**/*.test.ts\""
+  },
+  "dependencies": {
+    "playwright": "1.62.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2"
+  }
+}

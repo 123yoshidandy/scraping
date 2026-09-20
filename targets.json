@@ -1,0 +1,22 @@
+[
+  {
+    "name": "pokemon-center-restock-list",
+    "description": "ポケモンセンターオンラインの「再入荷」一覧に新しい商品が追加された（再販の検知）",
+    "url": "https://www.pokemoncenter-online.com/search/?prefn1=releaseType&prefv1=2&srule=top-new-product&sz=200",
+    "triggerWhen": {
+      "type": "items_added",
+      "selector": "ul.product-grid li.product",
+      "keyAttribute": "data-pid",
+      "labelSelector": ".txtBox .txt a"
+    },
+    "requireSelector": "ul.product-grid"
+  },
+  {
+    "name": "pokemon-center-item-4521329279039",
+    "description": "マスコット ヤドン Pokémon Surf の再入荷（品切れ表示が消えたら通知）。監視したい商品の JAN に差し替えて enabled: true にする",
+    "url": "https://www.pokemoncenter-online.com/4521329279039.html",
+    "triggerWhen": { "type": "selector_absent", "selector": ".price-container p.stock" },
+    "requireSelector": ".price-container .price",
+    "enabled": false
+  }
+]
