@@ -2,7 +2,7 @@
   {
     "name": "pokemon-center-restock-list",
     "description": "ポケモンセンターオンラインの「再入荷」一覧に新しい商品が追加された（再販の検知）",
-    "url": "https://www.pokemoncenter-online.com/search/?prefn1=releaseType&prefv1=2&srule=top-new-product&sz=200",
+    "url": "https://www.pokemoncenter-online.com/search/?prefn1=releaseType&prefv1=2&srule=top-new-product&sz=1000",
     "triggerWhen": {
       "type": "items_added",
       "selector": "ul.product-grid li.product",
