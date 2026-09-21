@@ -51,7 +51,10 @@ npm test               # ユニットテスト（node:test。ブラウザは起�
       "type": "text_absent",                 // selector_exists | selector_absent | text_present | text_absent | items_added
       "text": "SOLD OUT"                     // text系ルールで必須（selector系・items_added では selector が必須）
       // "keyAttribute": "data-id",          // items_added で必須。項目を一意に識別する属性名
-      // "labelSelector": ".title"           // items_added で任意。項目内で表示名を取る相対セレクタ
+      // "labelSelector": ".title",          // items_added で任意。項目内で表示名を取る相対セレクタ
+      // "max": 7200,                        // number_at_most で必須。この値以下なら成立
+      // "min": 1,                           // number_at_most で任意。これ未満は無視（default: 1）
+      // "rules": []                         // all_of で必須。1件以上の子ルール
     },
     "requireSelector": "h1.product-title",  // 強く推奨（後述）
     "enabled": true,                         // 任意。false で一時停止（状態は保持される）
@@ -74,6 +77,8 @@ npm test               # ユニットテスト（node:test。ブラウザは起�
 | `text_present` | ページの可視テキストに `text` が含まれる | 大文字小文字無視・空白正規化した部分一致。最大10秒待つ |
 | `text_absent` | ページの可視テキストに `text` が含まれない | ⚠️ `requireSelector` 併用を強く推奨 |
 | `items_added` | `selector` の可視要素のうち、`keyAttribute` の値が過去7日間に観測されていない項目が1件以上ある | 一覧ページの新着検知用。初回は基準取得のみで通知しない。可視要素が0件なら error。⚠️ `requireSelector` 併用を強く推奨 |
+| `number_at_most` | `selector` の最初の可視要素のテキストから読み取った数値が `min` 以上 `max` 以下 | 価格の上限判定用。全角数字・通貨記号・桁区切りを解釈する（「￥5,940」→ 5940）。**要素が現れなければ不成立**（価格非表示＝購入不可）。要素はあるのに数値が読めなければ error |
+| `all_of` | `rules` の子ルールがすべて成立 | 「価格が定価以下」かつ「カートに入れられる」のような複合条件用。子には `items_added` と `all_of` は書けない。1つでも不成立なら残りは評価しない |
 
 **⚠️ absent系ルールには `requireSelector` を必ず併用すること。**
 absent系は「無いこと」が成立条件のため、bot遮断ページや白紙ページでも成立してしまう。`requireSelector`（商品タイトルなど、正しいページなら必ず存在する要素）が見つからない場合は判定不能 (error) 扱いになり、誤通知を防げる。
@@ -101,7 +106,67 @@ absent系は「無いこと」が成立条件のため、bot遮断ページや�
   "triggerWhen": { "type": "items_added", "selector": "ul.list > li", "keyAttribute": "data-id", "labelSelector": ".title a" },
   "requireSelector": "ul.list"
 }
+
+// 定価以下で購入できるようになったら通知（転売価格では通知しない）
+// 「価格が表示されている」だけでは購入できるとは限らないため、購入ボタンの存在と組み合わせる
+{
+  "triggerWhen": { "type": "all_of", "rules": [
+    { "type": "number_at_most", "selector": ".price", "max": 7300 },
+    { "type": "selector_exists", "selector": "#add-to-cart-button" }
+  ]},
+  "requireSelector": "h1.product-title"
+}
 ```
+
+## ストア別のレシピ（同梱の targets.json で使用）
+
+「定価より高い価格では通知しない」ため、どのストアでも **価格の上限判定と購入可否の判定を `all_of` で組み合わせる**。価格が表示されていても購入できない状態（招待販売・受注期間外など）があるため、価格だけでは判定できない。
+
+判定が速く終わるよう、**購入できないことが即座に分かる条件を先頭に置く**（`text_absent` / `selector_absent` は待たずに判定するため、不成立ならその時点で終わる）。
+
+### Amazon.co.jp
+
+| 用途 | セレクタ・文言 |
+| --- | --- |
+| 価格 | `#corePrice_feature_div .a-price-whole` |
+| 購入可否 | `#add-to-cart-button` の存在 |
+| 招待販売の除外 | 本文に「招待された方のみ」が無いこと |
+| requireSelector | `#productTitle` |
+
+- 人気商品は **招待販売**（価格は表示されるが招待メールを受け取った人しか買えない）になっていることがある。`#availability` に「招待された方のみご購入いただけます」と出るので、この文言で除外する
+- 価格はカートボックスの表示価格。転売出品者がカートボックスを取ると高い価格が表示され、上限を超えるので通知されない
+- `.a-offscreen` はページ全体に多数あるため使わない。必ず `#corePrice_feature_div` に絞る
+- ⚠️ **Amazon の利用規約は「価格などの収集」「ロボット等のデータ収集ツールの使用」を明示的に禁止している**（robots.txt が `/dp/` を許可しているかどうかとは別の話）。また GitHub Actions のIPからは bot 判定でブロックされることがあり、その場合は `requireSelector` が見つからず連続 error（Degraded）になる
+
+### 楽天ブックス
+
+| 用途 | セレクタ・文言 |
+| --- | --- |
+| 価格 | `p.productPrice span[itemprop=price]` |
+| 購入可否 | `div.new_buyButton button.new_addToCart` の存在 |
+| 注文不可の除外 | 本文に「ご注文できない商品」が無いこと |
+| requireSelector | `#productTitle h1[itemprop=name]` |
+
+- ページの読み込み完了まで **約26秒** かかる。既定のタイムアウト30秒では誤って error になりやすいため、同梱のターゲットは `timeoutMs: 60000` を指定している
+- `p.price` は右側のランキング枠にも現れるので、必ず `p.productPrice` に絞る
+
+### ポケモンセンターオンライン
+
+| 用途 | セレクタ・文言 |
+| --- | --- |
+| 価格 | `.price-container .price` |
+| 購入可否 | `.add-to-cart-button.btn:not(.default)` の存在 |
+| 購入不可の除外 | `.add-to-cart-button.default` が無いこと |
+| requireSelector | `.price-container .price` |
+
+- **カートボタンの文言は在庫の有無にかかわらず「カートに入れる」で変わらない**。購入できないときは `default` クラスが付いて無効化されるので、クラスで判定する
+- 「品切れ」表示の有無では判定できない。受注販売のページは品切れ表示が無いのにカートボタンが無効、ということがある
+- 抽選販売のページはカートボタン自体が別物になるため、本文の「抽選販売」で除外する
+- 色やサイズを選ぶ商品（バリエーションあり）は、選択前はカートボタンに `default` が付く。この判定は単一商品のページ向け
+
+### ヨドバシ.com は監視できない
+
+ヨドバシ.com は **ヘッドレスブラウザからの接続を拒否する**（同じ回線・同じURLでも、ヘッダを揃えた通常のリクエストは 200 を返すのに、Playwright のヘッドレス Chromium は接続を切られる）。本ツールは Playwright で動くため監視できない。
 
 ## 状態と通知の挙動
 
@@ -112,6 +177,7 @@ absent系は「無いこと」が成立条件のため、bot遮断ページや�
 - 個別ターゲットの error では exit code は 0 のまま（定期実行が失敗メールでスパムしないため）。exit 1 になるのは設定ファイル不正・未処理クラッシュ・チェック可能ターゲット0件のみ
 - 条件成立時と error 時はスクリーンショットを `screenshots/` に保存（Actions では Artifacts にアップロード）
 - config から削除（またはリネーム）したターゲットの状態は自動で掃除される
+- `number_at_most` で読み取った数値は「観測値: 7,216（上限: 7,300）」の形でログ・ジョブサマリー・通知に出る。条件が成立しなかった実行でも出るので、セレクタが正しく効いているかを確認できる
 - `items_added`（一覧の新着検知）は差分ベースで動作する
   - 初回チェック（または state リセット・リネーム直後）は現在の項目集合を基準として保存するだけで **通知しない**
   - 2回目以降、前回までに観測していない項目があれば **そのたびに** 通知する（連続した実行でそれぞれ別の新着があれば両方通知）。通知には項目名・キー・リンクを最大30件列挙し、残りは件数のみ
@@ -203,10 +269,14 @@ export class SlackNotifier implements Notifier {
 - GitHub ホストランナーは Azure データセンターのIPのため、Cloudflare/Akamai 等の bot 対策が強いサイトは UA に関係なくブロックされることがある（連続 error として可視化される）。本ツールはステルス対策を行わない
 - 監視対象サイトの利用規約・robots.txt を確認し、迷惑にならない頻度で使うこと
 - 逐次チェック（1ブラウザ・ターゲットごとに新規コンテキスト）のため、10ターゲット程度までを想定。それ以上はチェックの並列化（コンテキスト3〜4並列）を検討
-- 同梱の `targets.json` が監視するポケモンセンターオンラインは、利用規約（第6条1項17号・18号）で自動化された手段による在庫情報の取得・スクレイピングを禁止している。この設定は個人利用・検知のみの用途で、利用者自身の判断により有効化している
+  - 同梱の `targets.json`（有効11件）で1回の実行は約100秒。うち約80秒は楽天ブックス3件のページ読み込み待ち
+- 存在系の判定（`selector_exists` / `number_at_most`）は、要素が見つからないとき最大10秒待ってから「不成立」と結論する。不成立が続くターゲットではこの待ち時間が積み上がる
+- 同梱の `targets.json` が監視するポケモンセンターオンラインは、利用規約（第6条1項17号・18号）で自動化された手段による在庫情報の取得・スクレイピングを禁止している。Amazon の利用規約も価格情報の収集とロボットによるアクセスを禁止している。これらの設定は個人利用・検知のみの用途で、利用者自身の判断により有効化している
 
 ## 将来拡張の候補
 
 - `content_changed` ルール: 指定要素のテキストのハッシュを状態に保存し、変化したら通知（「何が変わるかは分からないが変化を知りたい」ケース向け）
 - Slack / LINE (Messaging API) / メール / ntfy.sh などの Notifier 実装
 - `items_added` の拡張: ページ送り対応（複数ページの項目を1ターゲットで扱う）、保持期間（現在7日固定）の設定化、一覧に残ったままの項目の状態変化の検知
+- 楽天は無料の公式API（Rakuten Web Service。アプリIDのみで利用でき、1秒1リクエストまで）で価格と在庫を取得できる。ブラウザを使わずに済み、規約上も明確なので、楽天ブックス・楽天市場はAPI経由に置き換える価値がある
+- `number_at_most` の拡張: 表示テキストではなく属性値（`content=` / `data-price=`）からの読み取り、複数要素の最小値の採用

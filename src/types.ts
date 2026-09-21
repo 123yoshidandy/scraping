@@ -3,7 +3,9 @@ export type RuleType =
   | "selector_absent"
   | "text_present"
   | "text_absent"
-  | "items_added";
+  | "items_added"
+  | "number_at_most"
+  | "all_of";
 
 export interface TriggerRule {
   type: RuleType;
@@ -13,6 +15,12 @@ export interface TriggerRule {
   keyAttribute?: string;
   /** items_added 用: 項目要素内で表示名を取る相対セレクタ。省略時は項目全体のテキスト */
   labelSelector?: string;
+  /** number_at_most 用: この値以下なら成立。必須 */
+  max?: number;
+  /** number_at_most 用: この値未満は無視する（0やポイント表示の誤検出対策）。default: 1 */
+  min?: number;
+  /** all_of 用: すべて成立したら成立する子ルール。1件以上必須（items_added / all_of は入れ子にできない） */
+  rules?: TriggerRule[];
 }
 
 /** items_added ルールで観測した一覧の1項目 */
@@ -72,6 +80,8 @@ export interface CheckResult {
   items?: ItemRef[];
   /** items_added のみ: 前回までに観測していなかった項目（通知対象）。初回（基準取得）は空配列 */
   newItems?: ItemRef[];
+  /** number_at_most（all_of の子を含む）で観測した数値。判定の根拠としてログ・通知に出す */
+  value?: number;
 }
 
 export interface TargetState {

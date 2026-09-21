@@ -12,10 +12,274 @@
     "requireSelector": "ul.product-grid"
   },
   {
+    "name": "amazon-30th-celebration-box",
+    "description": "MEGA拡張パック 30th CELEBRATION BOX が Amazon で定価相当（7,300円以下）で購入可能になった（定価7,200円 / 相場は定価の2〜3倍）",
+    "url": "https://www.amazon.co.jp/dp/B0GXCRBL5J",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 7300
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "rakuten-books-30th-celebration-box",
+    "description": "MEGA拡張パック 30th CELEBRATION BOX が楽天ブックスで定価相当（7,300円以下）で注文可能になった（定価7,200円）",
+    "url": "https://books.rakuten.co.jp/rb/18595282/",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "ご注文できない商品"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "p.productPrice span[itemprop=price]",
+          "max": 7300
+        },
+        {
+          "type": "selector_exists",
+          "selector": "div.new_buyButton button.new_addToCart"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle h1[itemprop=name]",
+    "timeoutMs": 60000
+  },
+  {
+    "name": "amazon-espeon-umbreon-deck",
+    "description": "30th CELEBRATION プレミアムデッキセット エーフィ・ブラッキー が Amazon で定価相当（6,300円以下）で購入可能になった（定価6,200円 / 相場は定価の2〜3倍）",
+    "url": "https://www.amazon.co.jp/dp/B0GXCM4BCZ",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 6300
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "rakuten-books-espeon-umbreon-deck",
+    "description": "30th CELEBRATION プレミアムデッキセット エーフィ・ブラッキー が楽天ブックスで定価相当（6,300円以下）で注文可能になった（定価6,200円）",
+    "url": "https://books.rakuten.co.jp/rb/18595283/",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "ご注文できない商品"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "p.productPrice span[itemprop=price]",
+          "max": 6300
+        },
+        {
+          "type": "selector_exists",
+          "selector": "div.new_buyButton button.new_addToCart"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle h1[itemprop=name]",
+    "timeoutMs": 60000
+  },
+  {
+    "name": "amazon-storm-emeralda-box",
+    "description": "MEGA拡張パック ストームエメラルダ BOX が Amazon で定価相当（6,100円以下）で購入可能になった（定価6,000円 / 相場は定価の2〜3倍）",
+    "url": "https://www.amazon.co.jp/dp/B0GP928YDZ",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 6100
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "rakuten-books-storm-emeralda-box",
+    "description": "MEGA拡張パック ストームエメラルダ BOX が楽天ブックスで定価相当（6,100円以下）で注文可能になった（定価6,000円）",
+    "url": "https://books.rakuten.co.jp/rb/18537078/",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "ご注文できない商品"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "p.productPrice span[itemprop=price]",
+          "max": 6100
+        },
+        {
+          "type": "selector_exists",
+          "selector": "div.new_buyButton button.new_addToCart"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle h1[itemprop=name]",
+    "timeoutMs": 60000
+  },
+  {
+    "name": "pokemon-center-hajimari-pikachu-mascot",
+    "description": "マスコット はじまりのピカチュウ がポケモンセンターオンラインで購入可能になった（定価880円）",
+    "url": "https://www.pokemoncenter-online.com/4521329413068.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 880
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-hajimari-pikachu-plush",
+    "description": "ぬいぐるみ はじまりのピカチュウ がポケモンセンターオンラインで購入可能になった（定価3,300円）",
+    "url": "https://www.pokemoncenter-online.com/4521329413051.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 3300
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-package-pins-collection",
+    "description": "パッケージピンズ オールパッケージコレクション 1996-2025 がポケモンセンターオンラインで購入可能になった（定価30,000円）",
+    "url": "https://www.pokemoncenter-online.com/4521329435367.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 30000
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-espeon-umbreon-deck",
+    "description": "30th CELEBRATION プレミアムデッキセット エーフィ・ブラッキー がポケモンセンターオンラインで購入可能になった（定価6,200円）",
+    "url": "https://www.pokemoncenter-online.com/4521329462189.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "抽選販売"
+        },
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 6200
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
     "name": "pokemon-center-item-4521329279039",
-    "description": "マスコット ヤドン Pokémon Surf の再入荷（品切れ表示が消えたら通知）。監視したい商品の JAN に差し替えて enabled: true にする",
+    "description": "商品ページ監視のサンプル（マスコット ヤドン Pokémon Surf）。監視したい商品の JAN に差し替えて enabled: true にする",
     "url": "https://www.pokemoncenter-online.com/4521329279039.html",
-    "triggerWhen": { "type": "selector_absent", "selector": ".price-container p.stock" },
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 1650
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
     "requireSelector": ".price-container .price",
     "enabled": false
   }

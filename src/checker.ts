@@ -3,6 +3,7 @@ import path from "node:path";
 import { errors as playwrightErrors } from "playwright";
 import type { Browser, Page } from "playwright";
 import { findNewItems, normalizeItems, type RawItem } from "./items.js";
+import { DEFAULT_MIN, extractNumber } from "./numbers.js";
 import type { Target, CheckResult, CheckStatus, ItemRef, TriggerRule } from "./types.js";
 
 const DEFAULT_TIMEOUT_MS = 30_000;
@@ -12,7 +13,7 @@ const DEFAULT_USER_AGENT =
 const DEFAULT_LOCALE = "ja-JP";
 const DEFAULT_TIMEZONE = "Asia/Tokyo";
 const SCREENSHOT_DIR = "screenshots";
-/** 存在系ルール（selector_exists / text_present / items_added）で「不成立」と結論する前に待つ最大時間 */
+/** 存在系ルール（selector_exists / text_present / items_added / number_at_most）で「不成立」と結論する前に待つ最大時間 */
 const EXISTS_WAIT_CAP_MS = 10_000;
 const TEXT_POLL_INTERVAL_MS = 500;
 
@@ -54,7 +55,7 @@ async function runCheck(
   async function finish(
     status: CheckStatus,
     error?: string,
-    extra?: Pick<CheckResult, "items" | "newItems">,
+    extra?: Pick<CheckResult, "items" | "newItems" | "value">,
   ): Promise<CheckResult> {
     let screenshotPath: string | undefined;
     if (status === "matched" || status === "error") {
@@ -98,9 +99,9 @@ async function runCheck(
       }
     }
 
+    const waitCapMs = Math.min(timeoutMs, EXISTS_WAIT_CAP_MS);
     if (target.triggerWhen.type === "items_added") {
       const rule = target.triggerWhen;
-      const waitCapMs = Math.min(timeoutMs, EXISTS_WAIT_CAP_MS);
       const { elementCount, items } = await collectItems(page, rule, waitCapMs);
       // 0件は「不成立」ではなく判定不能として扱う。unmatched にすると、セレクタが古くなった期間に
       // seenItems が prune で空になり、修正後に全件が新着として通知されてしまう
@@ -123,8 +124,8 @@ async function runCheck(
       });
     }
 
-    const matched = await evaluateRule(page, target, timeoutMs);
-    return await finish(matched ? "matched" : "unmatched");
+    const { matched, value } = await evaluateRule(page, target.triggerWhen, waitCapMs);
+    return await finish(matched ? "matched" : "unmatched", undefined, { value });
   } catch (e) {
     return await finish("error", errorMessage(e));
   } finally {
@@ -132,9 +133,18 @@ async function runCheck(
   }
 }
 
-async function evaluateRule(page: Page, target: Target, timeoutMs: number): Promise<boolean> {
-  const rule = target.triggerWhen;
-  const waitCapMs = Math.min(timeoutMs, EXISTS_WAIT_CAP_MS);
+/** ルール評価の結果。value は number_at_most で実際に読み取った数値（ログ・通知の根拠） */
+interface RuleOutcome {
+  matched: boolean;
+  value?: number;
+}
+
+/** 1つの真偽ルールを評価する。all_of から子ルールを再帰的に評価するため rule 単体を受け取る */
+async function evaluateRule(
+  page: Page,
+  rule: TriggerRule,
+  waitCapMs: number,
+): Promise<RuleOutcome> {
   switch (rule.type) {
     case "selector_exists":
       // 遅いハイドレーションを許容するため、可視になるまで短時間待ってから判定する
@@ -144,18 +154,50 @@ async function evaluateRule(page: Page, target: Target, timeoutMs: number): Prom
           .filter({ visible: true })
           .first()
           .waitFor({ state: "visible", timeout: waitCapMs });
-        return true;
+        return { matched: true };
       } catch (e) {
-        if (e instanceof playwrightErrors.TimeoutError) return false;
+        if (e instanceof playwrightErrors.TimeoutError) return { matched: false };
         throw e;
       }
     case "selector_absent":
-      return (await visibleCount(page, rule.selector!)) === 0;
+      return { matched: (await visibleCount(page, rule.selector!)) === 0 };
     case "text_present":
-      return await pollForText(page, rule.text!, waitCapMs);
+      return { matched: await pollForText(page, rule.text!, waitCapMs) };
     case "text_absent":
       // 読み取り失敗は「不在＝成立」ではなく error として扱う（throw は呼び出し元で error になる）
-      return !includesNormalized(await page.innerText("body", { timeout: 5_000 }), rule.text!);
+      return {
+        matched: !includesNormalized(await page.innerText("body", { timeout: 5_000 }), rule.text!),
+      };
+    case "number_at_most": {
+      const locator = page.locator(rule.selector!).filter({ visible: true }).first();
+      try {
+        await locator.waitFor({ state: "visible", timeout: waitCapMs });
+      } catch (e) {
+        // 価格が表示されない＝購入不可、というECの一般的な挙動に合わせ「不成立」とする。
+        // bot遮断ページや白紙ページは requireSelector が error として弾く
+        if (e instanceof playwrightErrors.TimeoutError) return { matched: false };
+        throw e;
+      }
+      const text = await locator.innerText({ timeout: 5_000 });
+      const value = extractNumber(text);
+      if (value === undefined) {
+        // 要素はあるのに数値が読めない = セレクタが古くなった可能性。判定不能として error にする
+        throw new Error(
+          `number_at_most: セレクタ "${rule.selector}" から数値を取り出せません: "${text.replace(/\s+/g, " ").slice(0, 50)}"`,
+        );
+      }
+      return { matched: value >= (rule.min ?? DEFAULT_MIN) && value <= rule.max!, value };
+    }
+    case "all_of": {
+      // 1つでも不成立なら残りは評価しない。観測値は最初に得られたものを親に伝える
+      let value: number | undefined;
+      for (const child of rule.rules!) {
+        const outcome = await evaluateRule(page, child, waitCapMs);
+        value ??= outcome.value;
+        if (!outcome.matched) return { matched: false, value };
+      }
+      return { matched: true, value };
+    }
     case "items_added":
       // runCheck 側で先に分岐しているため到達しない（switch の網羅性のために残す）
       throw new Error("items_added は evaluateRule では処理しない");

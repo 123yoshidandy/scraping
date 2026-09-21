@@ -2,6 +2,7 @@ import { chromium } from "playwright";
 import { checkTarget } from "./checker.js";
 import { ConfigError, loadTargets } from "./config.js";
 import { knownItemKeys } from "./items.js";
+import { describeValue } from "./numbers.js";
 import { getNotifiers } from "./notifiers/notifier.js";
 import { writeRunReport, type ReportRow } from "./report.js";
 import { applyResult, DEGRADED_THRESHOLD, loadState, saveState } from "./state.js";
@@ -51,6 +52,8 @@ async function main(): Promise<number> {
           `::warning title=${target.name}::${DEGRADED_THRESHOLD}回連続でチェックに失敗しています: ${result.error ?? ""}`,
         );
       }
+      // number_at_most の観測値。不成立の実行でも根拠を残すため、常にログとレポートに出す
+      const valueNote = describeValue(target, result);
       rows.push({
         name: target.name,
         status: result.status,
@@ -60,14 +63,14 @@ async function main(): Promise<number> {
         note: outcome.event
           ? result.newItems
             ? `🔔 TRIGGERED (${result.newItems.length}件の新着)`
-            : "🔔 TRIGGERED"
-          : (result.error ?? ""),
+            : `🔔 TRIGGERED${valueNote ? ` (${valueNote})` : ""}`
+          : (result.error ?? valueNote ?? ""),
       });
       const itemsNote = result.items
         ? ` 全${result.items.length}件 / 新着${result.newItems?.length ?? 0}件`
         : "";
       console.log(
-        `[${result.status}] ${target.name} (${result.elapsedMs}ms)${itemsNote}${result.error ? ` - ${result.error}` : ""}`,
+        `[${result.status}] ${target.name} (${result.elapsedMs}ms)${itemsNote}${valueNote ? ` ${valueNote}` : ""}${result.error ? ` - ${result.error}` : ""}`,
       );
     }
   } finally {

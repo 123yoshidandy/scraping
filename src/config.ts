@@ -7,11 +7,27 @@ const RULE_TYPES: RuleType[] = [
   "text_present",
   "text_absent",
   "items_added",
+  "number_at_most",
+  "all_of",
+];
+
+/** all_of の子ルールに書けるもの。差分ルール（items_added）と入れ子の all_of は通知の意味が混ざるため除く */
+const NESTABLE_RULES: RuleType[] = [
+  "selector_exists",
+  "selector_absent",
+  "text_present",
+  "text_absent",
+  "number_at_most",
 ];
 
 const WAIT_UNTIL_VALUES = ["load", "domcontentloaded", "networkidle"];
 
-const SELECTOR_RULES: RuleType[] = ["selector_exists", "selector_absent", "items_added"];
+const SELECTOR_RULES: RuleType[] = [
+  "selector_exists",
+  "selector_absent",
+  "items_added",
+  "number_at_most",
+];
 const TEXT_RULES: RuleType[] = ["text_present", "text_absent"];
 
 export class ConfigError extends Error {}
@@ -61,43 +77,7 @@ export function loadTargets(path: string): Target[] {
       errors.push(`${label()}: url は http(s) の正しいURLが必須です`);
     }
 
-    const rule = item.triggerWhen;
-    if (!isRecord(rule)) {
-      errors.push(`${label()}: triggerWhen は必須です`);
-    } else {
-      const type = rule.type;
-      if (typeof type !== "string" || !RULE_TYPES.includes(type as RuleType)) {
-        errors.push(
-          `${label()}: triggerWhen.type は ${RULE_TYPES.join(" | ")} のいずれかが必須です`,
-        );
-      } else {
-        if (
-          SELECTOR_RULES.includes(type as RuleType) &&
-          (typeof rule.selector !== "string" || rule.selector.trim() === "")
-        ) {
-          errors.push(`${label()}: triggerWhen.type "${type}" には selector が必須です`);
-        }
-        if (
-          TEXT_RULES.includes(type as RuleType) &&
-          (typeof rule.text !== "string" || rule.text.trim() === "")
-        ) {
-          errors.push(`${label()}: triggerWhen.type "${type}" には text が必須です`);
-        }
-        if (type === "items_added") {
-          if (typeof rule.keyAttribute !== "string" || rule.keyAttribute.trim() === "") {
-            errors.push(`${label()}: triggerWhen.type "items_added" には keyAttribute が必須です`);
-          }
-          if (
-            rule.labelSelector !== undefined &&
-            (typeof rule.labelSelector !== "string" || rule.labelSelector.trim() === "")
-          ) {
-            errors.push(
-              `${label()}: triggerWhen.labelSelector は空でない文字列である必要があります`,
-            );
-          }
-        }
-      }
-    }
+    validateRule(item.triggerWhen, label, errors, false);
 
     validateOptionalString(item, "description", label, errors);
     validateOptionalString(item, "requireSelector", label, errors);
@@ -125,6 +105,83 @@ export function loadTargets(path: string): Target[] {
   }
 
   return parsed as Target[];
+}
+
+/**
+ * triggerWhen を検証する。all_of の子ルールを再帰的に検証するため rule 単体を受け取る。
+ * nested=true のときは all_of の子として許可された type だけを受け付ける。
+ */
+function validateRule(
+  rule: unknown,
+  label: () => string,
+  errors: string[],
+  nested: boolean,
+  path = "triggerWhen",
+): void {
+  if (!isRecord(rule)) {
+    errors.push(`${label()}: ${path} は必須です`);
+    return;
+  }
+  const type = rule.type;
+  if (typeof type !== "string" || !RULE_TYPES.includes(type as RuleType)) {
+    errors.push(`${label()}: ${path}.type は ${RULE_TYPES.join(" | ")} のいずれかが必須です`);
+    return;
+  }
+  if (nested && !NESTABLE_RULES.includes(type as RuleType)) {
+    errors.push(
+      `${label()}: ${path}.type "${type}" は all_of の子ルールには使えません（使えるのは ${NESTABLE_RULES.join(" | ")}）`,
+    );
+    return;
+  }
+
+  if (
+    SELECTOR_RULES.includes(type as RuleType) &&
+    (typeof rule.selector !== "string" || rule.selector.trim() === "")
+  ) {
+    errors.push(`${label()}: ${path}.type "${type}" には selector が必須です`);
+  }
+  if (
+    TEXT_RULES.includes(type as RuleType) &&
+    (typeof rule.text !== "string" || rule.text.trim() === "")
+  ) {
+    errors.push(`${label()}: ${path}.type "${type}" には text が必須です`);
+  }
+
+  if (type === "items_added") {
+    if (typeof rule.keyAttribute !== "string" || rule.keyAttribute.trim() === "") {
+      errors.push(`${label()}: ${path}.type "items_added" には keyAttribute が必須です`);
+    }
+    if (
+      rule.labelSelector !== undefined &&
+      (typeof rule.labelSelector !== "string" || rule.labelSelector.trim() === "")
+    ) {
+      errors.push(`${label()}: ${path}.labelSelector は空でない文字列である必要があります`);
+    }
+  }
+
+  if (type === "number_at_most") {
+    const max = rule.max;
+    if (typeof max !== "number" || !Number.isFinite(max)) {
+      errors.push(`${label()}: ${path}.type "number_at_most" には max（数値）が必須です`);
+    }
+    if (rule.min !== undefined) {
+      if (typeof rule.min !== "number" || !Number.isFinite(rule.min) || rule.min < 0) {
+        errors.push(`${label()}: ${path}.min は0以上の数値である必要があります`);
+      } else if (typeof max === "number" && Number.isFinite(max) && rule.min > max) {
+        errors.push(`${label()}: ${path}.min は max 以下である必要があります`);
+      }
+    }
+  }
+
+  if (type === "all_of") {
+    if (!Array.isArray(rule.rules) || rule.rules.length === 0) {
+      errors.push(`${label()}: ${path}.type "all_of" には rules（1件以上の配列）が必須です`);
+    } else {
+      rule.rules.forEach((child, i) => {
+        validateRule(child, label, errors, true, `${path}.rules[${i}]`);
+      });
+    }
+  }
 }
 
 function isRecord(v: unknown): v is Record<string, unknown> {

@@ -1,4 +1,5 @@
 import { escapeMdLabel, listItemLines } from "../items.js";
+import { describeValue } from "../numbers.js";
 import type { Notifier, TriggerEvent } from "../types.js";
 
 const ENV_WEBHOOK_URL = "DISCORD_WEBHOOK_URL";
@@ -77,13 +78,15 @@ export function buildDiscordPayload(event: TriggerEvent): DiscordPayload {
         MAX_LISTED_ITEMS,
       ).join("\n")
     : `状態: ${previousStatus} → matched`;
+  const valueLine = describeValue(target, result);
+  const body = valueLine ? `${description}\n${valueLine}` : description;
   return {
     content: truncate(content, CONTENT_MAX),
     embeds: [
       {
         title: truncate(target.description ?? target.name, TITLE_MAX),
         url: target.url,
-        description: truncate(description, DESCRIPTION_MAX),
+        description: truncate(body, DESCRIPTION_MAX),
         timestamp: result.checkedAt,
       },
     ],

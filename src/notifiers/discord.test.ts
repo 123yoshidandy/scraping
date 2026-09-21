@@ -92,6 +92,36 @@ describe("buildDiscordPayload", () => {
     assert.ok(p.embeds[0].description.endsWith("…"));
   });
 
+  it("観測値があれば description に追記する", () => {
+    const priceTarget: Target = {
+      name: "price",
+      url: "https://example.com/item",
+      triggerWhen: {
+        type: "all_of",
+        rules: [
+          { type: "number_at_most", selector: ".price", max: 7200 },
+          { type: "selector_exists", selector: "#cart" },
+        ],
+      },
+    };
+    const p = buildDiscordPayload({
+      target: priceTarget,
+      result: {
+        targetName: "price",
+        status: "matched",
+        checkedAt: T0,
+        elapsedMs: 1,
+        value: 7200,
+      },
+      previousStatus: "unmatched",
+    });
+    assert.equal(p.content, "🔔 条件成立: price");
+    assert.equal(
+      p.embeds[0].description,
+      "状態: unmatched → matched\n観測値: 7,200（上限: 7,200）",
+    );
+  });
+
   it("真偽ルールのイベントは状態遷移を載せ、description が無ければ name をタイトルにする", () => {
     const p = buildDiscordPayload(boolEvent);
     assert.equal(p.content, "🔔 条件成立: bool");

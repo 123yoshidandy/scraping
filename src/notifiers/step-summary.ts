@@ -1,5 +1,6 @@
 import { appendFileSync } from "node:fs";
 import { escapeMdLabel, listItemLines } from "../items.js";
+import { describeValue } from "../numbers.js";
 import type { Notifier, TriggerEvent } from "../types.js";
 
 /**
@@ -24,12 +25,14 @@ export class StepSummaryNotifier implements Notifier {
           }).map((line) => `  - ${line}`),
         ]
       : [`- 状態: \`${previousStatus}\` → \`matched\``];
+    const valueLine = describeValue(target, result);
     const lines = [
       `# 🔔 条件成立: ${target.name}`,
       "",
       ...(target.description ? [target.description, ""] : []),
       `- URL: ${target.url}`,
       ...detail,
+      ...(valueLine ? [`- ${valueLine}`] : []),
       `- 検知時刻: ${result.checkedAt}`,
       ...(result.screenshotPath
         ? [`- スクリーンショット: \`${result.screenshotPath}\`（Artifacts からダウンロード可能）`]
