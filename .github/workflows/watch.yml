@@ -19,8 +19,9 @@ concurrency:
 jobs:
   watch:
     runs-on: ubuntu-latest
-    # ハングしたブラウザでデフォルトの6時間分のクォータを浪費しないための上限
-    timeout-minutes: 10
+    # ハングしたブラウザでデフォルトの6時間分のクォータを浪費しないための上限。
+    # 同梱の targets.json で1回の実行は数分（ホストをまたいで並列にチェックする）。
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
