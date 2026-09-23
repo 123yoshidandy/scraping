@@ -259,6 +259,1238 @@
     "requireSelector": ".price-container .price"
   },
   {
+    "name": "amazon-pokemoncard-151-box",
+    "description": "強化拡張パック ポケモンカード151 BOX が Amazon で定価相当（5,900円以下）で購入可能になった（定価5,800円 / 相場 約45,800円・7.9倍 / 2026年11月下旬〜12月上旬に再販確定）",
+    "url": "https://www.amazon.co.jp/dp/B0BT15FD3J",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 5900
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "amazon-rocket-gang-glory-box",
+    "description": "拡張パック ロケット団の栄光 BOX が Amazon で定価相当（5,500円以下）で購入可能になった（定価5,400円 / 相場 約21,000円・3.9倍）",
+    "url": "https://www.amazon.co.jp/dp/B0DKHHYTGJ",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 5500
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "amazon-25th-anniversary-collection-box",
+    "description": "拡張パック 25th ANNIVERSARY COLLECTION BOX が Amazon で定価相当（4,900円以下）で購入可能になった（定価4,752円 / 相場 約72,000円・15.2倍 / 2021年発売で絶版のため再販の可能性は低い）",
+    "url": "https://www.amazon.co.jp/dp/B09B8VMT7Q",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 4900
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "amazon-25th-anniversary-golden-box",
+    "description": "25th ANNIVERSARY GOLDEN BOX が Amazon で定価相当（17,800円以下）で購入可能になった（定価17,600円 / 相場 約245,000円・13.9倍 / 受注生産品・最終再販2022年2月）",
+    "url": "https://www.amazon.co.jp/dp/B09PZ58YRY",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 17800
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "amazon-kokuen-no-shihaisha-box",
+    "description": "拡張パック 黒炎の支配者 BOX が Amazon で定価相当（5,500円以下）で購入可能になった（定価5,400円 / 相場 約15,000円・2.8倍 / 絶版）",
+    "url": "https://www.amazon.co.jp/dp/B0BYC7NQYN",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 5500
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "amazon-30th-cardset-kanto",
+    "description": "MEGA 30th CELEBRATION カードセット フシギダネ・ヒトカゲ・ゼニガメ が Amazon で定価相当（1,250円以下）で購入可能になった（定価1,200円 / 2026年10月16日発売・現在は招待販売 / 相場予想は定価の約4倍）",
+    "url": "https://www.amazon.co.jp/dp/B0GXCYMRGL",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 1250
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "amazon-30th-cardset-johto",
+    "description": "MEGA 30th CELEBRATION カードセット チコリータ・ヒノアラシ・ワニノコ が Amazon で定価相当（1,250円以下）で購入可能になった（定価1,200円 / 2026年10月16日発売・現在は招待販売）",
+    "url": "https://www.amazon.co.jp/dp/B0GXCC7W7Q",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 1250
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "amazon-30th-cardset-paldea",
+    "description": "MEGA 30th CELEBRATION カードセット ニャオハ・ホゲータ・クワッス が Amazon で定価相当（1,250円以下）で購入可能になった（定価1,200円 / 2026年10月16日発売・現在は招待販売）",
+    "url": "https://www.amazon.co.jp/dp/B0GXCT83HB",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 1250
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "pokemon-center-30th-mascot-pikapika",
+    "description": "30周年記念マスコット ピカピカ！ピカチュウ がポケモンセンターオンラインで購入可能になった（定価1,870円 / 落札 約3,100円・1.66倍 / 通常販売SKU）",
+    "url": "https://www.pokemoncenter-online.com/4521329419121.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 1870
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-nkyo-pikachu-plush",
+    "description": "N響×ポケモン ぬいぐるみ ピカチュウ がポケモンセンターオンラインで購入可能になった（定価2,750円 / 落札 約3,700円・1.35倍 / 演奏会場限定販売もあり供給が限られる）",
+    "url": "https://www.pokemoncenter-online.com/4521329453828.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 2750
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-iittala-origo-bowl",
+    "description": "【イッタラ】オリゴ ボウル 0.25L ピカチュウ がポケモンセンターオンラインで購入可能になった（定価5,280円 / 落札 約8,800円・1.67倍 / 発売から4か月プレミアが持続）",
+    "url": "https://www.pokemoncenter-online.com/6411923690003.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 5280
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-iittala-origo-mug",
+    "description": "【イッタラ】オリゴ マグ 0.4L ピカチュウ がポケモンセンターオンラインで購入可能になった（定価5,500円 / 落札 約8,800円・1.60倍）",
+    "url": "https://www.pokemoncenter-online.com/6411923689991.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 5500
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-iittala-origo-plate",
+    "description": "【イッタラ】オリゴ プレート 20cm ピカチュウ がポケモンセンターオンラインで購入可能になった（定価5,500円 / 落札 約8,500円・1.55倍）",
+    "url": "https://www.pokemoncenter-online.com/6411923690010.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 5500
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-lifesize-glaceon-nesobery",
+    "description": "ぬいぐるみ 等身大グレイシア 寝そべり がポケモンセンターオンラインで購入可能になった（定価44,000円 / 落札 約70,000円・1.59倍 / ブイズ等身大シリーズは受注を繰り返している）",
+    "url": "https://www.pokemoncenter-online.com/4521329395746.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 44000
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-lifesize-sylveon-nesobery",
+    "description": "ぬいぐるみ 等身大ニンフィア 寝そべり がポケモンセンターオンラインで購入可能になった（定価44,000円 / 落札 約68,000円・1.55倍）",
+    "url": "https://www.pokemoncenter-online.com/4521329395753.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 44000
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-lifesize-leafeon-nesobery",
+    "description": "ぬいぐるみ 等身大リーフィア 寝そべり がポケモンセンターオンラインで購入可能になった（定価44,000円 / 落札 約66,900円・1.52倍）",
+    "url": "https://www.pokemoncenter-online.com/4521329395739.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 44000
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-sean-wotherspoon-charizard",
+    "description": "Sean Wotherspoon × Pokémon Center ぬいぐるみ リザードン がポケモンセンターオンラインで購入可能になった（定価7,700円 / 落札 9,050〜11,000円・1.30倍 / 2次お届け分は2027年1月発送予定）",
+    "url": "https://www.pokemoncenter-online.com/4521329438061.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 7700
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-30th-plush-pikapika",
+    "description": "30周年記念ぬいぐるみ ピカピカ！ピカチュウ がポケモンセンターオンラインで購入可能になった（定価3,300円 / 落札 約4,125円・1.25倍 / 受注販売の実績あり）",
+    "url": "https://www.pokemoncenter-online.com/4521329419114.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 3300
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-lifesize-lucario",
+    "description": "ぬいぐるみ 等身大ルカリオ がポケモンセンターオンラインで購入可能になった（定価46,200円 / 落札 約84,000円・1.82倍 / 現在は抽選販売ページ）",
+    "url": "https://www.pokemoncenter-online.com/4521329371924.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "抽選販売"
+        },
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 46200
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-komeda-sophia-mug",
+    "description": "コメダ珈琲店×ポケモンセンターナゴヤ ソフィア用ジョッキ がポケモンセンターオンラインで購入可能になった（定価5,940円 / 落札 9,020〜12,200円・1.78倍 / 2025年5月に再抽選の実績あり）",
+    "url": "https://www.pokemoncenter-online.com/4521329422510.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "抽選販売"
+        },
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 5940
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "amazon-eevee-heroes-box",
+    "description": "強化拡張パック イーブイヒーローズ BOX が Amazon で定価相当（5,050円以下）で購入可能になった（定価4,950円 / 相場 約150,000円・30.3倍 / 絶版のため再販の可能性は低い）",
+    "url": "https://www.amazon.co.jp/dp/B08WB9FZ5D",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 5050
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "amazon-lost-abyss-box",
+    "description": "拡張パック ロストアビス BOX が Amazon で定価相当（5,050円以下）で購入可能になった（定価4,950円 / 相場 約47,500円・9.6倍 / 絶版）",
+    "url": "https://www.amazon.co.jp/dp/B0B1HVCYHG",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 5050
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "amazon-choden-breaker-box",
+    "description": "拡張パック 超電ブレイカー BOX が Amazon で定価相当（5,500円以下）で購入可能になった（定価5,400円 / 相場 約31,500円・5.8倍 / 再販の可能性あり）",
+    "url": "https://www.amazon.co.jp/dp/B0D2WX4CYJ",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 5500
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "amazon-pokemon-go-box",
+    "description": "強化拡張パック Pokémon GO BOX が Amazon で定価相当（5,300円以下）で購入可能になった（定価5,200円 / 相場 約28,000円・5.4倍 / 定価は1パック260円×20の計算値）",
+    "url": "https://www.amazon.co.jp/dp/B09RK8TGL7",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 5300
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "amazon-vstar-universe-box",
+    "description": "ハイクラスパック VSTARユニバース BOX が Amazon で定価相当（5,600円以下）で購入可能になった（定価5,500円 / 相場 約26,000円・4.7倍）",
+    "url": "https://www.amazon.co.jp/dp/B0B6H9PTBW",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 5600
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "amazon-black-bolt-box",
+    "description": "拡張パック ブラックボルト BOX が Amazon で定価相当（5,900円以下）で購入可能になった（定価5,800円 / 相場 約22,000円・3.8倍 / 現行弾で再販継続中）",
+    "url": "https://www.amazon.co.jp/dp/B0DP4586RV",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 5900
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "amazon-white-flare-box",
+    "description": "拡張パック ホワイトフレア BOX が Amazon で定価相当（5,900円以下）で購入可能になった（定価5,800円 / 相場 約20,200円・3.5倍 / 現行弾で再販継続中）",
+    "url": "https://www.amazon.co.jp/dp/B0DP481Y24",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 5900
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "amazon-neppu-no-arena-box",
+    "description": "強化拡張パック 熱風のアリーナ BOX が Amazon で定価相当（5,500円以下）で購入可能になった（定価5,400円 / 相場 約17,300円・3.2倍 / 公式の再販待ち）",
+    "url": "https://www.amazon.co.jp/dp/B0DKHFYGQM",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 5500
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "amazon-terastal-fes-ex-box",
+    "description": "ハイクラスパック テラスタルフェスex BOX が Amazon で定価相当（5,600円以下）で購入可能になった（定価5,500円 / 相場 約17,000円・3.1倍 / 少量の再販が続く可能性）",
+    "url": "https://www.amazon.co.jp/dp/B0D86FVG5R",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 5600
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "amazon-shiny-treasure-ex-box",
+    "description": "ハイクラスパック シャイニートレジャーex BOX が Amazon で定価相当（5,600円以下）で購入可能になった（定価5,500円 / 相場 約15,600円・2.8倍 / 少量再販あり）",
+    "url": "https://www.amazon.co.jp/dp/B0CF1MDBS5",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 5600
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "amazon-hengen-no-kamen-box",
+    "description": "拡張パック 変幻の仮面 BOX が Amazon で定価相当（5,500円以下）で購入可能になった（定価5,400円 / 相場 約14,500円・2.7倍 / 現在は在庫切れ）",
+    "url": "https://www.amazon.co.jp/dp/B0CR2Q994N",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 5500
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "amazon-snow-hazard-box",
+    "description": "拡張パック スノーハザード BOX が Amazon で定価相当（5,500円以下）で購入可能になった（定価5,400円 / 相場 約12,500円・2.3倍 / 再販実績あり）",
+    "url": "https://www.amazon.co.jp/dp/B0BNZWSBH6",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 5500
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "amazon-battle-partners-box",
+    "description": "拡張パック バトルパートナーズ BOX が Amazon で定価相当（5,500円以下）で購入可能になった（定価5,400円 / 相場 約9,300円・1.7倍 / 今後3年程度は再販が期待できる）",
+    "url": "https://www.amazon.co.jp/dp/B0DB7C1Z26",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 5500
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "amazon-mega-symphonia-box",
+    "description": "MEGA拡張パック メガシンフォニア BOX が Amazon で定価相当（5,500円以下）で購入可能になった（定価5,400円 / 相場 約7,500円・1.4倍 / Amazonが定価5,412円で招待販売中）",
+    "url": "https://www.amazon.co.jp/dp/B0F189YH8W",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "招待された方のみ"
+        },
+        {
+          "type": "number_at_most",
+          "selector": "#corePrice_feature_div .a-price-whole",
+          "max": 5500
+        },
+        {
+          "type": "selector_exists",
+          "selector": "#add-to-cart-button"
+        }
+      ]
+    },
+    "requireSelector": "#productTitle"
+  },
+  {
+    "name": "pokemon-center-lifesize-oshawott",
+    "description": "ぬいぐるみ 等身大ミジュマル がポケモンセンターオンラインで購入可能になった（定価6,600円 / 落札中央値 20,900円・3.17倍 / 2022年発売で再販なし）",
+    "url": "https://www.pokemoncenter-online.com/4521329354507.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 6600
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-pendulum-clock-sentret",
+    "description": "振り子時計 Little Daydream オタチ がポケモンセンターオンラインで購入可能になった（定価5,940円 / 落札中央値 13,000円・2.19倍 / 落札33件と需要が厚い）",
+    "url": "https://www.pokemoncenter-online.com/4521329413044.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 5940
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-ippudo-mini-donburi",
+    "description": "一風堂 ミニどんぶり ポケモンセンターフクオカR がポケモンセンターオンラインで購入可能になった（定価3,300円 / 落札中央値 6,135円・1.86倍 / 店舗常設商品）",
+    "url": "https://www.pokemoncenter-online.com/4521329411064.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 3300
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-aloha-shirt-dan-s",
+    "description": "アロハシャツ ダン ポケモンコンシェルジュ S がポケモンセンターオンラインで購入可能になった（定価4,950円 / 落札中央値 8,332円・1.68倍）",
+    "url": "https://www.pokemoncenter-online.com/4521329400198.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 4950
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-bellsprout-led-light",
+    "description": "マダツボミのLEDライト ポケモンコンシェルジュ がポケモンセンターオンラインで購入可能になった（定価7,700円 / 落札中央値 12,750円・1.66倍）",
+    "url": "https://www.pokemoncenter-online.com/4521329380957.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 7700
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-lifesize-psyduck",
+    "description": "ぬいぐるみ 等身大コダック がポケモンセンターオンラインで購入可能になった（定価30,800円 / 落札中央値 約49,900円・1.62倍 / 現在は抽選販売ページ）",
+    "url": "https://www.pokemoncenter-online.com/4521329379975.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "抽選販売"
+        },
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 30800
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-komeda-daruma-glass",
+    "description": "コメダ珈琲店×ポケモンセンターナゴヤ ダルマグラス がポケモンセンターオンラインで購入可能になった（定価2,200円 / 落札 約3,300円・1.50倍 / 再抽選の実績あり）",
+    "url": "https://www.pokemoncenter-online.com/4521329422541.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "抽選販売"
+        },
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 2200
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-monsterball-kyusu",
+    "description": "モンスターボール型急須 がポケモンセンターオンラインで購入可能になった（定価5,500円 / 落札中央値 8,150円・1.48倍）",
+    "url": "https://www.pokemoncenter-online.com/4521329405902.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 5500
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-ippudo-aritayaki-donburi",
+    "description": "一風堂 有田焼どんぶり白丸 ポケモンセンターフクオカR がポケモンセンターオンラインで購入可能になった（定価5,940円 / 落札中央値 8,600円・1.45倍）",
+    "url": "https://www.pokemoncenter-online.com/4521329411057.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 5940
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-pichu-parka-free",
+    "description": "マスコット付きパーカー Little Daydream ピチュー Free がポケモンセンターオンラインで購入可能になった（定価7,700円 / 落札中央値 11,000円・1.43倍）",
+    "url": "https://www.pokemoncenter-online.com/4521329412870.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 7700
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-komeda-cushion",
+    "description": "コメダ珈琲店×ポケモンセンターナゴヤ ソファ柄生地クッション がポケモンセンターオンラインで購入可能になった（定価4,950円 / 落札 7,000円・1.41倍 / 再抽選の実績あり）",
+    "url": "https://www.pokemoncenter-online.com/4521329422558.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "抽選販売"
+        },
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 4950
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-psyduck-posing-plush",
+    "description": "ポージングぬいぐるみ コダック ポケモンコンシェルジュ がポケモンセンターオンラインで購入可能になった（定価4,950円 / 落札 6,399円・1.29倍 / 落札1件のため参考値）",
+    "url": "https://www.pokemoncenter-online.com/4521329418636.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 4950
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-lifesize-vaporeon-nesobery",
+    "description": "ぬいぐるみ 等身大シャワーズ 寝そべり がポケモンセンターオンラインで購入可能になった（定価44,000円 / 落札中央値 53,390円・1.21倍 / 2026年2月に再抽選の実績あり）",
+    "url": "https://www.pokemoncenter-online.com/4521329393872.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "抽選販売"
+        },
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 44000
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-komeda-boot-glass",
+    "description": "コメダ珈琲店×ポケモンセンターナゴヤ ブーツグラス がポケモンセンターオンラインで購入可能になった（定価3,300円 / 落札中央値 4,000円・1.21倍 / 再抽選の実績あり）",
+    "url": "https://www.pokemoncenter-online.com/4521329422534.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "抽選販売"
+        },
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 3300
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-sean-wotherspoon-pikachu",
+    "description": "Sean Wotherspoon × Pokémon Center ぬいぐるみ ピカチュウ がポケモンセンターオンラインで購入可能になった（定価7,700円 / 落札中央値 8,979円・1.17倍）",
+    "url": "https://www.pokemoncenter-online.com/4521329438078.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 7700
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
+    "name": "pokemon-center-lifesize-altaria",
+    "description": "ぬいぐるみ 等身大チルタリス がポケモンセンターオンラインで購入可能になった（定価55,000円 / 落札中央値 63,980円・1.16倍 / 2026年2月に再抽選の実績あり）",
+    "url": "https://www.pokemoncenter-online.com/4521329366500.html",
+    "triggerWhen": {
+      "type": "all_of",
+      "rules": [
+        {
+          "type": "text_absent",
+          "text": "抽選販売"
+        },
+        {
+          "type": "selector_absent",
+          "selector": ".add-to-cart-button.default"
+        },
+        {
+          "type": "number_at_most",
+          "selector": ".price-container .price",
+          "max": 55000
+        },
+        {
+          "type": "selector_exists",
+          "selector": ".add-to-cart-button.btn:not(.default)"
+        }
+      ]
+    },
+    "requireSelector": ".price-container .price"
+  },
+  {
     "name": "pokemon-center-item-4521329279039",
     "description": "商品ページ監視のサンプル（マスコット ヤドン Pokémon Surf）。監視したい商品の JAN に差し替えて enabled: true にする",
     "url": "https://www.pokemoncenter-online.com/4521329279039.html",

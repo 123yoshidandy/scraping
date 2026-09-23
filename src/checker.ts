@@ -4,6 +4,7 @@ import { errors as playwrightErrors } from "playwright";
 import type { Browser, Page } from "playwright";
 import { findNewItems, normalizeItems, type RawItem } from "./items.js";
 import { DEFAULT_MIN, extractNumber } from "./numbers.js";
+import { awaitHostSlot } from "./throttle.js";
 import type { Target, CheckResult, CheckStatus, ItemRef, TriggerRule } from "./types.js";
 
 const DEFAULT_TIMEOUT_MS = 30_000;
@@ -75,6 +76,8 @@ async function runCheck(
   }
 
   try {
+    // 同一ホストへの連続アクセスを避ける（リトライ時もここを通る）
+    await awaitHostSlot(target.url);
     const response = await page.goto(target.url, {
       waitUntil: target.waitUntil ?? DEFAULT_WAIT_UNTIL,
       timeout: timeoutMs,

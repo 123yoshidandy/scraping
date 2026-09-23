@@ -6,7 +6,12 @@ import { describeValue } from "./numbers.js";
 import { getNotifiers } from "./notifiers/notifier.js";
 import { writeRunReport, type ReportRow } from "./report.js";
 import { applyResult, DEGRADED_THRESHOLD, loadState, saveState } from "./state.js";
-import type { Target, TriggerEvent } from "./types.js";
+import {
+  groupTargetsByHost,
+  MAX_CONCURRENT_HOSTS,
+  runWithConcurrency,
+} from "./throttle.js";
+import type { CheckResult, Target, TriggerEvent } from "./types.js";
 
 const TARGETS_PATH = process.env.TARGETS_PATH ?? "targets.json";
 
@@ -32,49 +37,78 @@ async function main(): Promise<number> {
   const state = loadState();
   const events: TriggerEvent[] = [];
   const rows: ReportRow[] = [];
+  const results = new Map<string, CheckResult>();
 
   const browser = await chromium.launch();
   try {
-    for (const target of enabled) {
-      // items_added 用に既知の項目キー集合を渡す（真偽ルールのターゲットは seenItems が無いので undefined になる）
-      const result = await checkTarget(
-        browser,
-        target,
-        knownItemKeys(state.targets[target.name], new Date().toISOString()),
-      );
-      const outcome = applyResult(state, target, result);
-      if (outcome.event) {
-        events.push(outcome.event);
-      }
-      if (outcome.becameDegraded) {
-        // GitHub Actions のワークフローアノテーション（閾値を跨いだ実行時のみ出す）
-        console.log(
-          `::warning title=${target.name}::${DEGRADED_THRESHOLD}回連続でチェックに失敗しています: ${result.error ?? ""}`,
-        );
-      }
-      // number_at_most の観測値。不成立の実行でも根拠を残すため、常にログとレポートに出す
-      const valueNote = describeValue(target, result);
-      rows.push({
-        name: target.name,
-        status: result.status,
-        previous: outcome.previousStatus,
-        elapsedMs: result.elapsedMs,
-        consecutiveFailures: state.targets[target.name]?.consecutiveFailures ?? 0,
-        note: outcome.event
-          ? result.newItems
-            ? `🔔 TRIGGERED (${result.newItems.length}件の新着)`
-            : `🔔 TRIGGERED${valueNote ? ` (${valueNote})` : ""}`
-          : (result.error ?? valueNote ?? ""),
-      });
-      const itemsNote = result.items
-        ? ` 全${result.items.length}件 / 新着${result.newItems?.length ?? 0}件`
-        : "";
-      console.log(
-        `[${result.status}] ${target.name} (${result.elapsedMs}ms)${itemsNote}${valueNote ? ` ${valueNote}` : ""}${result.error ? ` - ${result.error}` : ""}`,
-      );
-    }
+    // ホストごとに直列、ホストをまたいで並列に実行する。
+    // 同じサイトへ同時にアクセスせず（間隔も checker 側で守る）、その待ち時間を他サイトのチェックで埋める
+    const groups = groupTargetsByHost(enabled);
+    await runWithConcurrency(
+      groups.map((group) => async () => {
+        for (const target of group) {
+          let result: CheckResult;
+          try {
+            // items_added 用に既知の項目キー集合を渡す（真偽ルールのターゲットは seenItems が無いので undefined になる）
+            result = await checkTarget(
+              browser,
+              target,
+              knownItemKeys(state.targets[target.name], new Date().toISOString()),
+            );
+          } catch (e) {
+            // 1件の想定外の失敗で実行全体を止めない
+            result = {
+              targetName: target.name,
+              status: "error",
+              checkedAt: new Date().toISOString(),
+              elapsedMs: 0,
+              error: `予期しないエラー: ${(e instanceof Error ? e.message : String(e)).split("\n")[0]}`,
+            };
+          }
+          results.set(target.name, result);
+          const valueNote = describeValue(target, result);
+          const itemsNote = result.items
+            ? ` 全${result.items.length}件 / 新着${result.newItems?.length ?? 0}件`
+            : "";
+          console.log(
+            `[${result.status}] ${target.name} (${result.elapsedMs}ms)${itemsNote}${valueNote ? ` ${valueNote}` : ""}${result.error ? ` - ${result.error}` : ""}`,
+          );
+        }
+      }),
+      MAX_CONCURRENT_HOSTS,
+    );
   } finally {
     await browser.close().catch(() => {});
+  }
+
+  // state の反映とレポートは設定ファイルの順序で行い、並列実行の完了順に左右されないようにする
+  for (const target of enabled) {
+    const result = results.get(target.name);
+    if (!result) continue;
+    const outcome = applyResult(state, target, result);
+    if (outcome.event) {
+      events.push(outcome.event);
+    }
+    if (outcome.becameDegraded) {
+      // GitHub Actions のワークフローアノテーション（閾値を跨いだ実行時のみ出す）
+      console.log(
+        `::warning title=${target.name}::${DEGRADED_THRESHOLD}回連続でチェックに失敗しています: ${result.error ?? ""}`,
+      );
+    }
+    // number_at_most の観測値。不成立の実行でも根拠を残すため、常にレポートに出す
+    const valueNote = describeValue(target, result);
+    rows.push({
+      name: target.name,
+      status: result.status,
+      previous: outcome.previousStatus,
+      elapsedMs: result.elapsedMs,
+      consecutiveFailures: state.targets[target.name]?.consecutiveFailures ?? 0,
+      note: outcome.event
+        ? result.newItems
+          ? `🔔 TRIGGERED (${result.newItems.length}件の新着)`
+          : `🔔 TRIGGERED${valueNote ? ` (${valueNote})` : ""}`
+        : (result.error ?? valueNote ?? ""),
+    });
   }
 
   // 通知は notifier ごとに独立して実行し、1つの失敗が他を巻き込まないようにする
